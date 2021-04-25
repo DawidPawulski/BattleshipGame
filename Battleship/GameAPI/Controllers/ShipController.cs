@@ -43,9 +43,15 @@ namespace GameAPI.Controllers
 
             _context.Entry(player).State = EntityState.Modified;
             _context.Entry(board).State = EntityState.Modified;
+            
             foreach (var field in board.Fields)
             {
                 _context.Entry(field).State = EntityState.Modified;
+            }
+
+            foreach (var ship in player.Ships)
+            {
+                _context.Entry(ship).State = EntityState.Modified;
             }
 
             try
