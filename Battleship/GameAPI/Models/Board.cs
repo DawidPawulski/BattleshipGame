@@ -18,7 +18,8 @@ namespace GameAPI.Models
         public int Size { get; set; }
 
         public List<Field> Fields { get; set; }
-        public List<int> NearHits { get; set; }
+        public List<int> ShipNearFields { get; set; }
+        public List<int> HitsList { get; set; }
         public int PlayerId { get; set; }
         public Player Player { get; set; }
         public MoveMessages Message { get; set; }
@@ -26,7 +27,8 @@ namespace GameAPI.Models
         public void CreateBoard()
         {
             Fields = new List<Field>();
-            NearHits = new List<int>();
+            ShipNearFields = new List<int>();
+            HitsList = new List<int>();
 
             _boardSeq = Enumerable.Range(1, 100);
 
