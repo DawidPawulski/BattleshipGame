@@ -7,6 +7,7 @@ using System.IO;
 using GameAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json.Serialization;
 
 namespace GameAPI
 {
@@ -28,6 +29,14 @@ namespace GameAPI
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()
                     .AllowAnyMethod().AllowAnyHeader());
             });
+            
+            // JSON Serializer
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
+                        .Json.ReferenceLoopHandling.Ignore)
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
 
             services.AddDbContext<DataContext>(p =>
                 p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
