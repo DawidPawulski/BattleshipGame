@@ -8,10 +8,13 @@ namespace GameAPI.Helpers
 {
     public static class MoveHelper
     {
+        private const string HorizontalOrientation = "horizontal";
+        private const string VerticalOrientation = "vertical";
         private static List<Field> _fields;
         private static Field _hitField;
-        private static List<Field> _nearHitsList;
+        private static List<Field> _nearShipFieldList;
         private static List<Field> _fieldsToPickList;
+        private static List<Field> _previousHits;
         private static List<FieldValues> _valuesForMissedShot;
         private static List<Ship> _playersShipList;
         private static Ship _hitShip;
@@ -21,8 +24,8 @@ namespace GameAPI.Helpers
         {
             _fields = board.Fields;
             _playersShipList = player.Ships;
-            _nearHitsList = new List<Field>();
 
+            PopulatePreviousHitsListWithFields(board);
             PopulateNearHitsListWithFields(board);
             ChooseFieldToShoot();
             ThrowIfHitFieldNotFound();
@@ -49,18 +52,94 @@ namespace GameAPI.Helpers
             }
         }
 
+        private static void PopulatePreviousHitsListWithFields(Board board)
+        {
+            _previousHits = new List<Field>();
+            
+            foreach (var previousHit in board.HitsList)
+            {
+                _previousHits.Add(_fields.FirstOrDefault(x => x.OrderNumber == previousHit));
+            }
+        }
+
         private static void ChooseFieldToShoot()
         {
+            const int indexForNextNumberInRow = 1;
+            const int indexForNextNumberInColumn = 10;
+            
+            _fieldsToPickList = new List<Field>();
+            
+            switch (_previousHits.Count)
+            {
+                case 0:
+                    _fieldsToPickList = _fields.Where(x => x.isHit == false).ToList();
+                    break;
+                case 1:
+                    var previousHit = _previousHits[0];
+
+                    _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
+                        previousHit.OrderNumber + indexForNextNumberInRow && x.isHit == false));
+                    _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
+                        previousHit.OrderNumber - indexForNextNumberInRow && x.isHit == false));
+                    _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
+                        previousHit.OrderNumber + indexForNextNumberInColumn && x.isHit == false));
+                    _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
+                        previousHit.OrderNumber - indexForNextNumberInColumn && x.isHit == false));
+                    break;
+                default:
+                {
+                    AssignFieldsToPickListAccordinglyToShipOrientation(indexForNextNumberInRow, 
+                        indexForNextNumberInColumn);
+
+                    break;
+                }
+            }
+
             try
             {
-                _fieldsToPickList = _nearHitsList != null && _nearHitsList.Count > 0
-                    ? _nearHitsList.Where(x => x.isHit == false).ToList()
-                    : _fields.Where(x => x.isHit == false).ToList();
+                _fieldsToPickList.RemoveAll(x => x == null);
                 _hitField = _fieldsToPickList[Random.Next(_fieldsToPickList.Count)];
             }
             catch (IndexOutOfRangeException)
             {
                 _hitField = _fields.FirstOrDefault(x => x.isHit == false);
+            }
+        }
+
+        private static void AssignFieldsToPickListAccordinglyToShipOrientation(int indexForNextNumberInRow, 
+            int indexForNextNumberInColumn)
+        {
+            var previousHit = _previousHits[0];
+
+            var currentShip = _playersShipList.FirstOrDefault(x => x.Id == previousHit.ShipId);
+            var shipOrientation = currentShip?.Orientation;
+
+            switch (shipOrientation)
+            {
+                case HorizontalOrientation:
+                {
+                    foreach (var field in _previousHits)
+                    {
+                        _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
+                            x.OrderNumber == field.OrderNumber + indexForNextNumberInRow && x.isHit == false));
+                        _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
+                            x.OrderNumber == field.OrderNumber - indexForNextNumberInRow && x.isHit == false));
+                    }
+
+                    break;
+                }
+                case VerticalOrientation:
+                {
+                    foreach (var field in _previousHits)
+                    {
+                        _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
+                            x.OrderNumber == field.OrderNumber + indexForNextNumberInColumn && x.isHit == false));
+                        _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
+                            x.OrderNumber == field.OrderNumber - indexForNextNumberInColumn && x.isHit == false));
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -96,11 +175,13 @@ namespace GameAPI.Helpers
                 _hitShip.IsDestroyed = true;
                 AssignCorrectDestroyMessage(board);
                 SetAllNearFieldsToBeHit();
-                board.NearHits.Clear();
+                board.ShipNearFields.Clear();
+                board.HitsList.Clear();
             }
             else
             {
-                board.NearHits = _nearHitsList.Select(x => x.OrderNumber).ToList();
+                board.ShipNearFields = _nearShipFieldList.Select(x => x.OrderNumber).ToList();
+                board.HitsList.Add(_hitField.OrderNumber);
                 board.Message = MoveMessages.Hit;
             }
         }
@@ -124,7 +205,7 @@ namespace GameAPI.Helpers
 
         private static void SetAllNearFieldsToBeHit()
         {
-            foreach (var field in _nearHitsList)
+            foreach (var field in _nearShipFieldList)
             {
                 field.isHit = true;
             }
@@ -132,7 +213,7 @@ namespace GameAPI.Helpers
 
         private static void AssignNearHitsForCurrentShot()
         {
-            _nearHitsList = _fields.Where(x =>
+            _nearShipFieldList = _fields.Where(x =>
                 x.ShipId == _hitShip.Id || x.Value == _hitShip.NearFieldValuesName).ToList();
         }
 
@@ -151,9 +232,11 @@ namespace GameAPI.Helpers
 
         private static void PopulateNearHitsListWithFields(Board board)
         {
-            foreach (var nearHit in board.NearHits)
+            _nearShipFieldList = new List<Field>();
+            
+            foreach (var nearHit in board.ShipNearFields)
             {
-                _nearHitsList.Add(_fields.FirstOrDefault(x => x.OrderNumber == nearHit));
+                _nearShipFieldList.Add(_fields.FirstOrDefault(x => x.OrderNumber == nearHit));
             }
         }
     }
