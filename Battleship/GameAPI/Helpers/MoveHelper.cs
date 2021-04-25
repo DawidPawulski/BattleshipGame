@@ -10,9 +10,10 @@ namespace GameAPI.Helpers
     {
         private const string HorizontalOrientation = "horizontal";
         private const string VerticalOrientation = "vertical";
+        private const int IndexForNextNumberInRow = 1;
+        private const int IndexForNextNumberInColumn = 10;
         private static List<Field> _fields;
         private static Field _hitField;
-        private static List<Field> _nearShipFieldList;
         private static List<Field> _fieldsToPickList;
         private static List<Field> _previousHits;
         private static List<FieldValues> _valuesForMissedShot;
@@ -26,7 +27,6 @@ namespace GameAPI.Helpers
             _playersShipList = player.Ships;
 
             PopulatePreviousHitsListWithFields(board);
-            PopulateNearHitsListWithFields(board);
             ChooseFieldToShoot();
             ThrowIfHitFieldNotFound();
             
@@ -41,7 +41,6 @@ namespace GameAPI.Helpers
             else
             {
                 _hitShip = ChooseCorrectShip();
-                AssignNearHitsForCurrentShot();
                 
                 // Reduce ship health by 1 point
                 _hitShip.Health--;
@@ -64,9 +63,6 @@ namespace GameAPI.Helpers
 
         private static void ChooseFieldToShoot()
         {
-            const int indexForNextNumberInRow = 1;
-            const int indexForNextNumberInColumn = 10;
-            
             _fieldsToPickList = new List<Field>();
             
             switch (_previousHits.Count)
@@ -78,19 +74,18 @@ namespace GameAPI.Helpers
                     var previousHit = _previousHits[0];
 
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber + indexForNextNumberInRow && x.isHit == false));
+                        previousHit.OrderNumber + IndexForNextNumberInRow && x.isHit == false));
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber - indexForNextNumberInRow && x.isHit == false));
+                        previousHit.OrderNumber - IndexForNextNumberInRow && x.isHit == false));
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber + indexForNextNumberInColumn && x.isHit == false));
+                        previousHit.OrderNumber + IndexForNextNumberInColumn && x.isHit == false));
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber - indexForNextNumberInColumn && x.isHit == false));
+                        previousHit.OrderNumber - IndexForNextNumberInColumn && x.isHit == false));
                     break;
                 default:
                 {
-                    AssignFieldsToPickListAccordinglyToShipOrientation(indexForNextNumberInRow, 
-                        indexForNextNumberInColumn);
-
+                    AssignFieldsToPickListAccordinglyToShipOrientation(IndexForNextNumberInRow, 
+                        IndexForNextNumberInColumn);
                     break;
                 }
             }
@@ -180,7 +175,6 @@ namespace GameAPI.Helpers
             }
             else
             {
-                board.ShipNearFields = _nearShipFieldList.Select(x => x.OrderNumber).ToList();
                 board.HitsList.Add(_hitField.OrderNumber);
                 board.Message = MoveMessages.Hit;
             }
@@ -199,22 +193,41 @@ namespace GameAPI.Helpers
                 FieldValues.PatrolBoat => MoveMessages.PatrolBoatDestroyed,
                 _ => throw new NullReferenceException("Ship field value set incorrectly and " +
                                                       "can't set move message")
-
             };
         }
 
         private static void SetAllNearFieldsToBeHit()
         {
-            foreach (var field in _nearShipFieldList)
+            var hitShip = _playersShipList.FirstOrDefault(x => x.Id == _hitField.ShipId);
+            var nearbyFieldsToBeMarkedAsHit = new List<Field>();
+
+            if (hitShip == null)
+            {
+                throw new NullReferenceException("Ship id from the hit field was not found in players ship list");
+            }
+
+            foreach (var field in _fields.Where(field => field.ShipId == hitShip.Id))
+            {
+                if (field.OrderNumber % 10 != 0)
+                {
+                    nearbyFieldsToBeMarkedAsHit.Add(_fields.FirstOrDefault(x => x.OrderNumber == field.OrderNumber + IndexForNextNumberInRow));
+                }
+
+                if (field.OrderNumber % 10 != 1)
+                {
+                    nearbyFieldsToBeMarkedAsHit.Add(_fields.FirstOrDefault(x => x.OrderNumber == field.OrderNumber - IndexForNextNumberInRow));
+                }
+                    
+                nearbyFieldsToBeMarkedAsHit.Add(_fields.FirstOrDefault(x => x.OrderNumber == field.OrderNumber + IndexForNextNumberInColumn));
+                nearbyFieldsToBeMarkedAsHit.Add(_fields.FirstOrDefault(x => x.OrderNumber == field.OrderNumber - IndexForNextNumberInColumn));
+            }
+
+            nearbyFieldsToBeMarkedAsHit.RemoveAll(x => x == null);
+            
+            foreach (var field in _fields.Where(field => nearbyFieldsToBeMarkedAsHit.Contains(field)))
             {
                 field.isHit = true;
             }
-        }
-
-        private static void AssignNearHitsForCurrentShot()
-        {
-            _nearShipFieldList = _fields.Where(x =>
-                x.ShipId == _hitShip.Id || x.Value == _hitShip.NearFieldValuesName).ToList();
         }
 
         private static void CheckIfPlayerDestroyedAllShipsAndWon(Board board)
@@ -228,16 +241,6 @@ namespace GameAPI.Helpers
             }
 
             board.Message = MoveMessages.Win;
-        }
-
-        private static void PopulateNearHitsListWithFields(Board board)
-        {
-            _nearShipFieldList = new List<Field>();
-            
-            foreach (var nearHit in board.ShipNearFields)
-            {
-                _nearShipFieldList.Add(_fields.FirstOrDefault(x => x.OrderNumber == nearHit));
-            }
         }
     }
 }
