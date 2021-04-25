@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameAPI.Models;
 using GameAPI.Models.Enums;
+using GameAPI.Models.Interfaces;
 
 namespace GameAPI.Helpers
 {
@@ -43,11 +44,13 @@ namespace GameAPI.Helpers
                     case HorizontalOrientation:
                     {
                         ChooseFieldsToPlaceShip(fields, IncrementFieldOrderNumberWhenHorizontal);
+                        SetOrientationForTheShip(ship, _currentShipOrientation);
                         break;
                     }
                     case VerticalOrientation:
                     {
                         ChooseFieldsToPlaceShip(fields, IncrementFieldOrderNumberWhenVertical);
+                        SetOrientationForTheShip(ship, _currentShipOrientation);
                         break;
                     }
                 }
@@ -61,7 +64,12 @@ namespace GameAPI.Helpers
             }
         }
 
-        private static void SetShipOnBoardField(List<Field> fields, Ship ship)
+        private static void SetOrientationForTheShip(IShip ship, string currentShipOrientation)
+        {
+            ship.Orientation = currentShipOrientation;
+        }
+
+        private static void SetShipOnBoardField(List<Field> fields, IShip ship)
         {
             foreach (var field in fields)
             {
