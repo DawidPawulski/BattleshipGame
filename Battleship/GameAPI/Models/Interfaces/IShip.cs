@@ -11,6 +11,7 @@ namespace GameAPI.Models.Interfaces
         public int Size { get; set; }
         public int Health { get; set; }
         public bool IsDestroyed { get; set; }
+        public string Orientation { get; set; }
         public int PlayerId { get; set; }
         public Player Player { get; set; }
     }

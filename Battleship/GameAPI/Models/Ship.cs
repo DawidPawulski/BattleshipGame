@@ -15,6 +15,7 @@ namespace GameAPI.Models
         public int Size { get; set; }
         public int Health { get; set; }
         public bool IsDestroyed { get; set; }
+        public string Orientation { get; set; }
         public int PlayerId { get; set; }
         public virtual Player Player { get; set; }
     }
