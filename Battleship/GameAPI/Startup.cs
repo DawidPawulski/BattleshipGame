@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.IO;
+using GameAPI.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 namespace GameAPI
 {
@@ -31,6 +34,10 @@ namespace GameAPI
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()
                     .AllowAnyMethod().AllowAnyHeader());
             });
+
+            services.AddDbContext<DataContext>(p =>
+                p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             
             services.AddControllers();
         }
