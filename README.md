@@ -38,35 +38,35 @@ To start react application you need to install node.js, then in terminal/command
 
 This is home screen of my game
 
-![HomeScreen](https://ibb.co/SXXyJj7)
+[HomeScreen](https://ibb.co/SXXyJj7)
 
 User can create here new game or check the game instructions.
 
-![Game instrunctions](https://ibb.co/K2Fg1b9)
+[Game instrunctions](https://ibb.co/K2Fg1b9)
 
 After clicking "Create new game!" button, new modal will apear.
 User can name your players here.
-![New game modal](https://ibb.co/rfGmVmS)
+[New game modal](https://ibb.co/rfGmVmS)
 
 Form validates if user typed new names. He can't proceed not doing this.
-![Validation](https://ibb.co/wcjQhT5)
+[Validation](https://ibb.co/wcjQhT5)
 
 This is main gameplay view.
 Just after pressing the "Start game!" button, the whole game will start and players will be trying to destroy opponents ships.
-![Main view](https://ibb.co/JpF87cL)
+[Main view](https://ibb.co/JpF87cL)
 
 During game, user can change the speed of the gameplay
-![Game speed](https://ibb.co/JF1XpPh)
+[Game speed](https://ibb.co/JF1XpPh)
 
 During the gameplay, last moves are displayed in the middle of the screen.
-![Gameplay](https://ibb.co/T866cBC)
+[Gameplay](https://ibb.co/T866cBC)
 
 When user press "Pause button!", gameplay will stop untill he press the "Start game!" button again.
-![Pause game](https://ibb.co/nPBMh1M)
+[Pause game](https://ibb.co/nPBMh1M)
 
 When one player destroys all enemy ships, final modal with winner name will appear.
 If user press "Close" button, he will be redirected to home screen, where he will be able to start new game.
-![Final modal](https://ibb.co/QY6cwX6)
+[Final modal](https://ibb.co/QY6cwX6)
 
 ## Technologies
 *C#
