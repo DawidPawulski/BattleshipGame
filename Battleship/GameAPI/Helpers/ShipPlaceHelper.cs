@@ -86,12 +86,15 @@ namespace GameAPI.Helpers
 
         private static void ChooseFieldsToPlaceShip(List<Field> fields, int incrementValueDependentOnOrientation)
         {
+            const int boardSize = 100;
+            const int firstField = 1;
+            
             while (!_isShipPlaced)
             {
                 _fieldNumbersToPlaceShips = new List<int>();
                 _allFieldNumbersInList = true;
-                _fieldsField = 1;
-                _startingNumber = Random.Next(1, 101);
+                _fieldsField = firstField;
+                _startingNumber = Random.Next(firstField, boardSize+1);
                 FillAllowedFieldNumbers(_startingNumber, _currentShipOrientation);
                 _currentNumber = _startingNumber + incrementValueDependentOnOrientation;
                 _fieldNumbersToPlaceShips.Add(_startingNumber);
@@ -140,6 +143,8 @@ namespace GameAPI.Helpers
 
         private static void FillAllowedFieldNumbers(int startingNumber, string orientation)
         {
+            const int rowLength = 10;
+            const int numberInTheSameColumnNextRow = 10;
             _allowedFieldNumbers = new List<int>();
             
             switch (orientation)
@@ -147,26 +152,26 @@ namespace GameAPI.Helpers
                 case HorizontalOrientation:
                     _allowedFieldNumbers = startingNumber switch
                     {
-                        _ when startingNumber < 11 => Enumerable.Range(1, 10).ToList(),
-                        _ when startingNumber < 21 => Enumerable.Range(11, 10).ToList(),
-                        _ when startingNumber < 31 => Enumerable.Range(21, 10).ToList(),
-                        _ when startingNumber < 41 => Enumerable.Range(31, 10).ToList(),
-                        _ when startingNumber < 51 => Enumerable.Range(41, 10).ToList(),
-                        _ when startingNumber < 61 => Enumerable.Range(51, 10).ToList(),
-                        _ when startingNumber < 71 => Enumerable.Range(61, 10).ToList(),
-                        _ when startingNumber < 81 => Enumerable.Range(71, 10).ToList(),
-                        _ when startingNumber < 91 => Enumerable.Range(81, 10).ToList(),
-                        _ when startingNumber < 101 => Enumerable.Range(91, 10).ToList(),
+                        _ when startingNumber < 11 => Enumerable.Range(1, rowLength).ToList(),
+                        _ when startingNumber < 21 => Enumerable.Range(11, rowLength).ToList(),
+                        _ when startingNumber < 31 => Enumerable.Range(21, rowLength).ToList(),
+                        _ when startingNumber < 41 => Enumerable.Range(31, rowLength).ToList(),
+                        _ when startingNumber < 51 => Enumerable.Range(41, rowLength).ToList(),
+                        _ when startingNumber < 61 => Enumerable.Range(51, rowLength).ToList(),
+                        _ when startingNumber < 71 => Enumerable.Range(61, rowLength).ToList(),
+                        _ when startingNumber < 81 => Enumerable.Range(71, rowLength).ToList(),
+                        _ when startingNumber < 91 => Enumerable.Range(81, rowLength).ToList(),
+                        _ when startingNumber < 101 => Enumerable.Range(91, rowLength).ToList(),
                         _ => throw new ArgumentOutOfRangeException()
                     };
                     break;
                 case VerticalOrientation:
                 {
-                    var startNum = startingNumber % 10;
-                    for (var i = 0; i < 10; i++)
+                    var startNum = startingNumber % rowLength;
+                    for (var i = 0; i < rowLength; i++)
                     {
                         _allowedFieldNumbers.Add(startNum);
-                        startNum += 10;
+                        startNum += numberInTheSameColumnNextRow;
                     }
                     break;
                 }
@@ -175,21 +180,26 @@ namespace GameAPI.Helpers
 
         private static void CalculateNearShipFields(List<Field> fields, List<int> newShipFields, FieldValues shipName)
         {
+            const int rowLength = 10;
+            const int rightEdgeOfTheRow = 0;
+            const int leftEdgeOfTheRow = 1;
+            const int indexForNextNumberInRow = 1;
+            const int indexForNextNumberInColumn = 10;
             var fieldsToOccupy = new List<int>();
 
             foreach (var shipField in newShipFields)
             {
-                if (shipField % 10 != 0)
+                if (shipField % rowLength != rightEdgeOfTheRow)
                 {
-                    fieldsToOccupy.Add(shipField+1);
+                    fieldsToOccupy.Add(shipField+indexForNextNumberInRow);
                 }
 
-                if (shipField % 10 != 1)
+                if (shipField % rowLength != leftEdgeOfTheRow)
                 {
-                    fieldsToOccupy.Add(shipField-1);
+                    fieldsToOccupy.Add(shipField-indexForNextNumberInRow);
                 }
-                fieldsToOccupy.Add(shipField-10);
-                fieldsToOccupy.Add(shipField+10);
+                fieldsToOccupy.Add(shipField-indexForNextNumberInColumn);
+                fieldsToOccupy.Add(shipField+indexForNextNumberInColumn);
             }
 
             SetChosenFieldsToBeRecognizedAsNearShip(fields, shipName, fieldsToOccupy);

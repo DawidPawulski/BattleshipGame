@@ -63,6 +63,7 @@ namespace GameAPI.Helpers
 
         private static void ChooseFieldToShoot()
         {
+            const int firstShipHitOrderNumber = 0;
             _fieldsToPickList = new List<Field>();
             
             switch (_previousHits.Count)
@@ -71,7 +72,7 @@ namespace GameAPI.Helpers
                     _fieldsToPickList = _fields.Where(x => x.IsHit == false).ToList();
                     break;
                 case 1:
-                    var previousHit = _previousHits[0];
+                    var previousHit = _previousHits[firstShipHitOrderNumber];
 
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
                         previousHit.OrderNumber + IndexForNextNumberInRow && x.IsHit == false));
@@ -104,7 +105,8 @@ namespace GameAPI.Helpers
         private static void AssignFieldsToPickListAccordinglyToShipOrientation(int indexForNextNumberInRow, 
             int indexForNextNumberInColumn)
         {
-            var previousHit = _previousHits[0];
+            const int firstShipHitOrderNumber = 0;
+            var previousHit = _previousHits[firstShipHitOrderNumber];
 
             var currentShip = _playersShipList.FirstOrDefault(x => x.Id == previousHit.ShipId);
             var shipOrientation = currentShip?.Orientation;
@@ -198,6 +200,9 @@ namespace GameAPI.Helpers
 
         private static void SetAllNearFieldsToBeHit()
         {
+            const int rowLength = 10;
+            const int rightEdgeOfTheRow = 0;
+            const int leftEdgeOfTheRow = 1;
             var hitShip = _playersShipList.FirstOrDefault(x => x.Id == _hitField.ShipId);
             var nearbyFieldsToBeMarkedAsHit = new List<Field>();
 
@@ -208,12 +213,12 @@ namespace GameAPI.Helpers
 
             foreach (var field in _fields.Where(field => field.ShipId == hitShip.Id))
             {
-                if (field.OrderNumber % 10 != 0)
+                if (field.OrderNumber % rowLength != rightEdgeOfTheRow)
                 {
                     nearbyFieldsToBeMarkedAsHit.Add(_fields.FirstOrDefault(x => x.OrderNumber == field.OrderNumber + IndexForNextNumberInRow));
                 }
 
-                if (field.OrderNumber % 10 != 1)
+                if (field.OrderNumber % rowLength != leftEdgeOfTheRow)
                 {
                     nearbyFieldsToBeMarkedAsHit.Add(_fields.FirstOrDefault(x => x.OrderNumber == field.OrderNumber - IndexForNextNumberInRow));
                 }

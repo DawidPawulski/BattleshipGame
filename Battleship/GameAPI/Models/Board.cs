@@ -9,6 +9,9 @@ namespace GameAPI.Models
 {
     public class Board : IBoard
     {
+        private const int BoardSize = 100;
+        private const int RowLength = 10;
+        private const int RightEdgeOfTheRow = 0;
         private IEnumerable<int> _boardSeq;
         private int _fieldOrderNumber = 1;
         private int _currentRow;
@@ -26,18 +29,20 @@ namespace GameAPI.Models
 
         public void CreateBoard()
         {
+            
+            
             Fields = new List<Field>();
             ShipNearFields = new List<int>();
             HitsList = new List<int>();
 
-            _boardSeq = Enumerable.Range(1, 100);
+            _boardSeq = Enumerable.Range(1, BoardSize);
 
             foreach (var seq in _boardSeq)
             {
                 Fields.Add(new Field(_fieldOrderNumber, _currentRow));
                 _fieldOrderNumber++;
                 
-                if (_fieldOrderNumber < 100 && (_fieldOrderNumber-1) % 10 == 0)
+                if (_fieldOrderNumber < BoardSize && (_fieldOrderNumber-1) % RowLength == RightEdgeOfTheRow)
                 {
                     _currentRow++;
                 }
