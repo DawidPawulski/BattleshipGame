@@ -31,7 +31,7 @@ namespace GameAPI.Helpers
             ThrowIfHitFieldNotFound();
             
             // Picked field will be recognized as hit
-            _hitField.isHit = true;
+            _hitField.IsHit = true;
 
             if (CheckIfShotMissed())
             {
@@ -68,19 +68,19 @@ namespace GameAPI.Helpers
             switch (_previousHits.Count)
             {
                 case 0:
-                    _fieldsToPickList = _fields.Where(x => x.isHit == false).ToList();
+                    _fieldsToPickList = _fields.Where(x => x.IsHit == false).ToList();
                     break;
                 case 1:
                     var previousHit = _previousHits[0];
 
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber + IndexForNextNumberInRow && x.isHit == false));
+                        previousHit.OrderNumber + IndexForNextNumberInRow && x.IsHit == false));
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber - IndexForNextNumberInRow && x.isHit == false));
+                        previousHit.OrderNumber - IndexForNextNumberInRow && x.IsHit == false));
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber + IndexForNextNumberInColumn && x.isHit == false));
+                        previousHit.OrderNumber + IndexForNextNumberInColumn && x.IsHit == false));
                     _fieldsToPickList.Add(_fields.FirstOrDefault(x => x.OrderNumber == 
-                        previousHit.OrderNumber - IndexForNextNumberInColumn && x.isHit == false));
+                        previousHit.OrderNumber - IndexForNextNumberInColumn && x.IsHit == false));
                     break;
                 default:
                 {
@@ -97,7 +97,7 @@ namespace GameAPI.Helpers
             }
             catch (IndexOutOfRangeException)
             {
-                _hitField = _fields.FirstOrDefault(x => x.isHit == false);
+                _hitField = _fields.FirstOrDefault(x => x.IsHit == false);
             }
         }
 
@@ -116,9 +116,9 @@ namespace GameAPI.Helpers
                     foreach (var field in _previousHits)
                     {
                         _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
-                            x.OrderNumber == field.OrderNumber + indexForNextNumberInRow && x.isHit == false));
+                            x.OrderNumber == field.OrderNumber + indexForNextNumberInRow && x.IsHit == false));
                         _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
-                            x.OrderNumber == field.OrderNumber - indexForNextNumberInRow && x.isHit == false));
+                            x.OrderNumber == field.OrderNumber - indexForNextNumberInRow && x.IsHit == false));
                     }
 
                     break;
@@ -128,9 +128,9 @@ namespace GameAPI.Helpers
                     foreach (var field in _previousHits)
                     {
                         _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
-                            x.OrderNumber == field.OrderNumber + indexForNextNumberInColumn && x.isHit == false));
+                            x.OrderNumber == field.OrderNumber + indexForNextNumberInColumn && x.IsHit == false));
                         _fieldsToPickList.Add(_fields.FirstOrDefault(x =>
-                            x.OrderNumber == field.OrderNumber - indexForNextNumberInColumn && x.isHit == false));
+                            x.OrderNumber == field.OrderNumber - indexForNextNumberInColumn && x.IsHit == false));
                     }
 
                     break;
@@ -226,7 +226,7 @@ namespace GameAPI.Helpers
             
             foreach (var field in _fields.Where(field => nearbyFieldsToBeMarkedAsHit.Contains(field)))
             {
-                field.isHit = true;
+                field.IsHit = true;
             }
         }
 

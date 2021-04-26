@@ -11,7 +11,7 @@ namespace GameAPI.Models
         public int Id { get; set; }
         public FieldValues Value { get; set; }
         public int OrderNumber { get; set; }
-        public bool isHit { get; set; }
+        public bool IsHit { get; set; }
         public int BoardId { get; set; }
         public int ShipId { get; set; }
         public RowNames RowName { get; set; }
