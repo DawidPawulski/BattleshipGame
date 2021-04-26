@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAPI", "GameAPI\GameAPI.csproj", "{58AA37D3-2F1D-44F3-83DC-1EC708E0905A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAPITests", "GameAPITests\GameAPITests.csproj", "{F5547A78-8290-4B1D-8EAA-23B02C5BB102}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{58AA37D3-2F1D-44F3-83DC-1EC708E0905A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58AA37D3-2F1D-44F3-83DC-1EC708E0905A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58AA37D3-2F1D-44F3-83DC-1EC708E0905A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5547A78-8290-4B1D-8EAA-23B02C5BB102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5547A78-8290-4B1D-8EAA-23B02C5BB102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5547A78-8290-4B1D-8EAA-23B02C5BB102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5547A78-8290-4B1D-8EAA-23B02C5BB102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
