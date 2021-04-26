@@ -7,10 +7,10 @@ namespace GameAPI.Controllers.Interfaces
 {
     public interface IBoardController
     {
-        public Task<ActionResult<IEnumerable<Board>>> GetBoards();
-        public Task<ActionResult<Board>> GetBoard(int id);
-        public Task<ActionResult> PutBoard(int id, Board board);
-        public Task<ActionResult<Board>> PostBoard(Board board);
-        public Task<ActionResult<Board>> DeleteBoard(int id);
+        Task<ActionResult<IEnumerable<Board>>> GetBoards();
+        Task<ActionResult<Board>> GetBoard(int id);
+        Task<ActionResult> PutBoard(int id, Board board);
+        Task<ActionResult<Board>> PostBoard(Board board);
+        Task<ActionResult<Board>> DeleteBoard(int id);
     }
 }

@@ -4,15 +4,15 @@ namespace GameAPI.Models.Interfaces
 {
     public interface IShip
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public FieldValues ShipNameFieldValues { get; set; }
-        public FieldValues NearFieldValuesName { get; set; }
-        public int Size { get; set; }
-        public int Health { get; set; }
-        public bool IsDestroyed { get; set; }
-        public string Orientation { get; set; }
-        public int PlayerId { get; set; }
-        public Player Player { get; set; }
+        int Id { get; set; }
+        string Name { get; set; }
+        FieldValues ShipNameFieldValues { get; set; }
+        FieldValues NearFieldValuesName { get; set; }
+        int Size { get; set; }
+        int Health { get; set; }
+        bool IsDestroyed { get; set; }
+        string Orientation { get; set; }
+        int PlayerId { get; set; }
+        Player Player { get; set; }
     }
 }

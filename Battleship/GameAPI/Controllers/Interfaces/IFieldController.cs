@@ -7,10 +7,10 @@ namespace GameAPI.Controllers.Interfaces
 {
     public interface IFieldController
     {
-        public Task<ActionResult<IEnumerable<Field>>> GetFields();
-        public Task<ActionResult<Field>> GetField(int id);
-        public Task<ActionResult> PutField(int id, Field field);
-        public Task<ActionResult<Field>> PostField(Field field);
-        public Task<ActionResult<Field>> DeleteField(int id);
+        Task<ActionResult<IEnumerable<Field>>> GetFields();
+        Task<ActionResult<Field>> GetField(int id);
+        Task<ActionResult> PutField(int id, Field field);
+        Task<ActionResult<Field>> PostField(Field field);
+        Task<ActionResult<Field>> DeleteField(int id);
     }
 }

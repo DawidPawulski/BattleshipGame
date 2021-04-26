@@ -6,6 +6,6 @@ namespace GameAPI.Controllers.Interfaces
 {
     public interface IShipController
     {
-        public Task<ActionResult<Board>> PutShips(int id, Player player);
+        Task<ActionResult<Board>> PutShips(int id, Player player);
     }
 }

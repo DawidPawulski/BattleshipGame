@@ -6,6 +6,6 @@ namespace GameAPI.Controllers.Interfaces
 {
     public interface IMoveController
     {
-        public Task<ActionResult<Board>> PutMove(int id);
+        Task<ActionResult<Board>> PutMove(int id);
     }
 }
