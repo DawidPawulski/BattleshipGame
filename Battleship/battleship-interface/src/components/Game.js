@@ -54,6 +54,16 @@ export class Game extends Component{
         });
     }
 
+    async placeShips(){
+        const pathToPlaceFirstPlayerShips = 'ship/' + this.state.firstPlayerBoard.Id + '/place-ships';
+        const pathToPlaceSecondPlayerShips = 'ship/' + this.state.secondPlayerBoard.Id + '/place-ships';
+
+        let firstPlayerShips = await update(pathToPlaceFirstPlayerShips, JSON.stringify({Player:this.state.firstPlayer}));
+        let secondPlayerShips = await update(pathToPlaceSecondPlayerShips, JSON.stringify({Player:this.state.secondPlayer}));
+        this.setState({firstPlayerBoard: firstPlayerShips});
+        this.setState({secondPlayerBoard: secondPlayerShips});
+    }
+
     render(){
     }
 }
