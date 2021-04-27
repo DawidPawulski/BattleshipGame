@@ -103,6 +103,62 @@ export class Game extends Component{
         this.setState({currentBoard: response});
     }
 
+    async loop(){
+        let firstPlayerId = this.state.firstPlayer.Id;
+        let secondPlayerId = this.state.secondPlayer.Id;
+
+        let id = setInterval(async () => {
+                    await this.getPlayerMove();
+                    await this.displayMessageInWarLog();
+                    await this.assignCurrentBoardToCorrectPlayer();
+                    if(this.state.currentBoard.Message === MoveMessages.Miss){
+                        this.state.opponentPlayerId === secondPlayerId ? this.setState({opponentPlayerId: firstPlayerId}) 
+                                    : this.setState({opponentPlayerId: secondPlayerId});
+                    }
+                    this.setState({gameSpeed: localStorage.getItem('speed')});
+                }, this.state.gameSpeed);
+        this.setState({intervalId: id})
+    }
+
+    
+
+    displayMessageInWarLog(){
+        const maximumLengthOfWarLog = 10;
+        let playerName = this.state.opponentPlayerId === this.state.firstPlayer.Id ? this.state.secondPlayer.Name : this.state.firstPlayer.Name;
+        let opponentName = this.state.opponentPlayerId === this.state.firstPlayer.Id ? this.state.firstPlayer.Name : this.state.secondPlayer.Name;
+        let boardMessage = MoveMessages[this.state.currentBoard.Message];
+        let warLogMessage = messageToDisplay(boardMessage, playerName, opponentName, this);
+        
+        if (this.state.warLog.length > maximumLengthOfWarLog){
+            this.state.warLog.splice(0, this.state.warLog.length-maximumLengthOfWarLog);
+        }
+        this.setState({warLog: [...this.state.warLog, warLogMessage]});
+    }
+
+    assignCurrentBoardToCorrectPlayer(){
+        if (this.state.opponentPlayerId === this.state.firstPlayer.Id)
+        {
+            this.setState({firstPlayerBoard: this.state.currentBoard})
+        }
+        else if (this.state.opponentPlayerId === this.state.secondPlayer.Id)
+        {
+            this.setState({secondPlayerBoard: this.state.currentBoard})
+        }
+    }
+
+    async componentDidUpdate(prevProps, prevState){
+        if(this.state.endGameModalShow)
+        {
+            clearInterval(this.state.intervalId);
+        }
+
+        if(this.state.playGame && this.state.gameSpeed !== prevState.gameSpeed)
+        {
+            clearInterval(this.state.intervalId);
+            this.loop();
+        }
+    }
+
     render(){
         let nameOfTheWinner = this.state.opponentPlayerId === this.state.firstPlayer.Id 
                             ? this.state.secondPlayer.Name : this.state.firstPlayer.Name;
