@@ -13,7 +13,21 @@ export class Game extends Component{
             boardRows: [],
             boardColumns: [],
             opponentPlayerId: Number,
+            currentBoard: [],
+            gameSpeed: 1000,
         };
+    }
+
+    async componentDidMount(){
+        await this.prepareGame();
+    }
+
+    async prepareGame(){
+        this.populateBoardHeaders();
+        await this.handleGetPlayers();
+        await this.createBoards();
+        await this.placeShips();
+        this.setDefaultValuesForNewGame();
     }
 
     async handleGetPlayers() {
