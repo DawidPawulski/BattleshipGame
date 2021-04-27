@@ -7,15 +7,12 @@ namespace GameAPITests.ModelsTests
     public class PlayerTests
     {
         private Player _player;
-        private Board _board;
         
         [SetUp]
         public void Setup()
         {
             _player = new Player {Name = "Dawid"};
-            _board = new Board();
-            _board.CreateBoard();
-            _player.Board = _board;
+
         }
 
         [Test]
