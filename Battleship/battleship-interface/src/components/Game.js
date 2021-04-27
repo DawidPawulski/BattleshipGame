@@ -12,6 +12,7 @@ export class Game extends Component{
             table: [],
             boardRows: [],
             boardColumns: [],
+            opponentPlayerId: Number,
         };
     }
 
@@ -62,6 +63,13 @@ export class Game extends Component{
         let secondPlayerShips = await update(pathToPlaceSecondPlayerShips, JSON.stringify({Player:this.state.secondPlayer}));
         this.setState({firstPlayerBoard: firstPlayerShips});
         this.setState({secondPlayerBoard: secondPlayerShips});
+    }
+
+    setDefaultValuesForNewGame(){
+        const defaultGameSpeed = 1000;
+
+        this.setState({opponentPlayerId: this.state.secondPlayer.Id});
+        localStorage.setItem('speed', defaultGameSpeed);
     }
 
     render(){
