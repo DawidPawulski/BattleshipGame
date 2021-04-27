@@ -1,4 +1,12 @@
 import React,{Component} from 'react';
+import {Row,Col,Container} from 'react-bootstrap';
+import {RowNames} from '../enums/RowNamesEnum';
+import {MoveMessages} from '../enums/MoveMessages';
+import {Button,ButtonToolbar} from 'react-bootstrap';
+import {EndGameModal} from './modals/EndGameModal';
+import {get,create,update} from '../helpers/apiHelpers';
+import {messageToDisplay} from '../helpers/warLogMessageHelper';
+import {Board} from './Board';
 
 export class Game extends Component{
 
@@ -15,6 +23,10 @@ export class Game extends Component{
             opponentPlayerId: Number,
             currentBoard: [],
             gameSpeed: 1000,
+            intervalId: Number,
+            playGame: false,
+            endGameModalShow: false,
+            warLog: []
         };
     }
 
@@ -84,6 +96,11 @@ export class Game extends Component{
 
         this.setState({opponentPlayerId: this.state.secondPlayer.Id});
         localStorage.setItem('speed', defaultGameSpeed);
+    }
+
+    async getPlayerMove(){
+        let response = await update('move/'+this.state.opponentPlayerId)
+        this.setState({currentBoard: response});
     }
 
     render(){
