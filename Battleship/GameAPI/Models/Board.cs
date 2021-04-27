@@ -29,8 +29,6 @@ namespace GameAPI.Models
 
         public void CreateBoard()
         {
-            
-            
             Fields = new List<Field>();
             ShipNearFields = new List<int>();
             HitsList = new List<int>();
