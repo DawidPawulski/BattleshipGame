@@ -31,6 +31,7 @@ The game continues until one of the players destroys all enemy ships.
 
 ## Opening the project
 
+Go to appsettings.json in GameAPI project, then fill "user id" and "password" for "DefaultConnection".
 User can run GameAPI from your IDE.
 To start react application you need to install node.js, then in terminal/command line search for folder battleship-interface and write "npm start".
 
