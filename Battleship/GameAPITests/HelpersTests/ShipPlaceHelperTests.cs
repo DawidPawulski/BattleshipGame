@@ -22,7 +22,7 @@ namespace GameAPITests.HelpersTests
         }
 
         [Test]
-        public void ShipPlaceHelper_WhenPlacingShipsOnBoard_FieldsShouldChangeValuesForAllShips()
+        public void PlaceShips_FieldsShouldChangeValuesForAllShips()
         {
             const int numberOfFieldsTakenByShips = 18;
             var fieldValuesForShips = new[]
@@ -39,7 +39,7 @@ namespace GameAPITests.HelpersTests
         }
         
         [Test]
-        public void ShipPlaceHelper_WhenPlacingShipsOnBoard_FourFieldsShouldHaveValueBattleship()
+        public void PlaceShips_FourFieldsShouldHaveValueBattleship()
         {
             const int numberOfFieldsTakenByBattleship = 4;
             const FieldValues fieldValueForBattleship = FieldValues.Battleship;
@@ -52,7 +52,7 @@ namespace GameAPITests.HelpersTests
         }
         
         [Test]
-        public void ShipPlaceHelper_WhenPlacingShipsOnBoard_AllIsHitPropertiesShouldBeSetToFalse()
+        public void PlaceShips_AllIsHitPropertiesShouldBeSetToFalse()
         {
             var allIsHitPropertiesAreSetToFalse = true;
             
