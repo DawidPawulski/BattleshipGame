@@ -13,18 +13,18 @@ export class Game extends Component{
     constructor(props){
         super(props);
         this.state={
+            currentBoard: [],
             firstPlayerBoard: [],
             secondPlayerBoard: [],
             firstPlayer: {},
             secondPlayer: {},
+            gameSpeed: 1000,
+            intervalId: Number,
+            opponentPlayerId: Number,
+            playGame: false,
             table: [],
             boardRows: [],
             boardColumns: [],
-            opponentPlayerId: Number,
-            currentBoard: [],
-            gameSpeed: 1000,
-            intervalId: Number,
-            playGame: false,
             endGameModalShow: false,
             warLog: []
         };
@@ -40,6 +40,24 @@ export class Game extends Component{
         await this.createBoards();
         await this.placeShips();
         this.setDefaultValuesForNewGame();
+    }
+
+    populateBoardHeaders(){
+        this.setState({
+            boardRows: [
+                {class: RowNames[RowNames.ARow], name: "A"},
+                {class: RowNames[RowNames.BRow], name: "B"},
+                {class: RowNames[RowNames.CRow], name: "C"},
+                {class: RowNames[RowNames.DRow], name: "D"},
+                {class: RowNames[RowNames.ERow], name: "E"},
+                {class: RowNames[RowNames.FRow], name: "F"},
+                {class: RowNames[RowNames.GRow], name: "G"},
+                {class: RowNames[RowNames.HRow], name: "H"},
+                {class: RowNames[RowNames.IRow], name: "I"},
+                {class: RowNames[RowNames.JRow], name: "J"}
+            ],
+            boardColumns: Array(10).fill().map((element, index) => index + 1)
+        });
     }
 
     async handleGetPlayers() {
@@ -63,24 +81,6 @@ export class Game extends Component{
         this.setState({secondPlayerBoard: secondPlayerBoardResponse});
     }
 
-    populateBoardHeaders(){
-        this.setState({
-            boardRows: [
-                {class: RowNames[RowNames.ARow], name: "A"},
-                {class: RowNames[RowNames.BRow], name: "B"},
-                {class: RowNames[RowNames.CRow], name: "C"},
-                {class: RowNames[RowNames.DRow], name: "D"},
-                {class: RowNames[RowNames.ERow], name: "E"},
-                {class: RowNames[RowNames.FRow], name: "F"},
-                {class: RowNames[RowNames.GRow], name: "G"},
-                {class: RowNames[RowNames.HRow], name: "H"},
-                {class: RowNames[RowNames.IRow], name: "I"},
-                {class: RowNames[RowNames.JRow], name: "J"}
-            ],
-            boardColumns: Array(10).fill().map((element, index) => index + 1)
-        });
-    }
-
     async placeShips(){
         const pathToPlaceFirstPlayerShips = 'ship/' + this.state.firstPlayerBoard.Id + '/place-ships';
         const pathToPlaceSecondPlayerShips = 'ship/' + this.state.secondPlayerBoard.Id + '/place-ships';
@@ -96,11 +96,6 @@ export class Game extends Component{
 
         this.setState({opponentPlayerId: this.state.secondPlayer.Id});
         localStorage.setItem('speed', defaultGameSpeed);
-    }
-
-    async getPlayerMove(){
-        let response = await update('move/'+this.state.opponentPlayerId)
-        this.setState({currentBoard: response});
     }
 
     async loop(){
@@ -120,7 +115,10 @@ export class Game extends Component{
         this.setState({intervalId: id})
     }
 
-    
+    async getPlayerMove(){
+        let response = await update('move/'+this.state.opponentPlayerId)
+        this.setState({currentBoard: response});
+    }
 
     displayMessageInWarLog(){
         const maximumLengthOfWarLog = 10;
