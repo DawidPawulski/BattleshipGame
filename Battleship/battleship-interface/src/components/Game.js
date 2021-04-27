@@ -38,7 +38,7 @@ export class Game extends Component{
         this.populateBoardHeaders();
         await this.handleGetPlayers();
         await this.createBoards();
-        await this.placeShips();
+        await this.placeShipsOnTheBoard();
         this.setDefaultValuesForNewGame();
     }
 
@@ -81,7 +81,7 @@ export class Game extends Component{
         this.setState({secondPlayerBoard: secondPlayerBoardResponse});
     }
 
-    async placeShips(){
+    async placeShipsOnTheBoard(){
         const pathToPlaceFirstPlayerShips = 'ship/' + this.state.firstPlayerBoard.Id + '/place-ships';
         const pathToPlaceSecondPlayerShips = 'ship/' + this.state.secondPlayerBoard.Id + '/place-ships';
 
@@ -98,7 +98,7 @@ export class Game extends Component{
         localStorage.setItem('speed', defaultGameSpeed);
     }
 
-    async loop(){
+    async gameLoop(){
         let firstPlayerId = this.state.firstPlayer.Id;
         let secondPlayerId = this.state.secondPlayer.Id;
 
@@ -153,7 +153,7 @@ export class Game extends Component{
         if(this.state.playGame && this.state.gameSpeed !== prevState.gameSpeed)
         {
             clearInterval(this.state.intervalId);
-            this.loop();
+            this.gameLoop();
         }
     }
 
@@ -178,7 +178,7 @@ export class Game extends Component{
                             {!this.state.playGame ? 
                                 (<Button variant='success' onClick={()=>{
                                     this.setState({playGame:true});
-                                    this.loop();
+                                    this.gameLoop();
                                 }}>
                                     Start game!
                                 </Button>)
