@@ -9,6 +9,9 @@ export class Game extends Component{
             secondPlayerBoard: [],
             firstPlayer: {},
             secondPlayer: {},
+            table: [],
+            boardRows: [],
+            boardColumns: [],
         };
     }
 
@@ -31,6 +34,24 @@ export class Game extends Component{
         let secondPlayerBoardResponse = await create('board', JSON.stringify(requestBodyToCreateSecondBoard));
         this.setState({firstPlayerBoard: firstPlayerBoardResponse});
         this.setState({secondPlayerBoard: secondPlayerBoardResponse});
+    }
+
+    populateBoardHeaders(){
+        this.setState({
+            boardRows: [
+                {class: RowNames[RowNames.ARow], name: "A"},
+                {class: RowNames[RowNames.BRow], name: "B"},
+                {class: RowNames[RowNames.CRow], name: "C"},
+                {class: RowNames[RowNames.DRow], name: "D"},
+                {class: RowNames[RowNames.ERow], name: "E"},
+                {class: RowNames[RowNames.FRow], name: "F"},
+                {class: RowNames[RowNames.GRow], name: "G"},
+                {class: RowNames[RowNames.HRow], name: "H"},
+                {class: RowNames[RowNames.IRow], name: "I"},
+                {class: RowNames[RowNames.JRow], name: "J"}
+            ],
+            boardColumns: Array(10).fill().map((element, index) => index + 1)
+        });
     }
 
     render(){
