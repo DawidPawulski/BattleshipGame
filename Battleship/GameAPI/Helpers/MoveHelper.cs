@@ -45,9 +45,9 @@ namespace GameAPI.Helpers
                 // Reduce ship health by 1 point
                 _hitShip.Health--;
                 
-                CheckIfShipDestroyed(board);
+                SetCorrectBoardMessageAndHitList(board);
                 
-                CheckIfPlayerDestroyedAllShipsAndWon(board);
+                SetBoardMessageToWinIfAllShipsDestroyed(board);
             }
         }
 
@@ -165,7 +165,7 @@ namespace GameAPI.Helpers
             return _valuesForMissedShot.Contains(_hitField.Value);
         }
 
-        private static void CheckIfShipDestroyed(Board board)
+        private static void SetCorrectBoardMessageAndHitList(Board board)
         {
             if (_hitShip.Health == 0)
             {
@@ -235,7 +235,7 @@ namespace GameAPI.Helpers
             }
         }
 
-        private static void CheckIfPlayerDestroyedAllShipsAndWon(Board board)
+        private static void SetBoardMessageToWinIfAllShipsDestroyed(Board board)
         {
             foreach (var ship in _playersShipList)
             {
