@@ -22,17 +22,17 @@ Each player has:
 - size 1 ship named "Tactical boat"
 - size 1 ship named "Destroyer"
 
-After pressing start button first player chooses a field from the opponent's board to hit.
-If a player hits an opponent's ship, the field changes to red and he can try to hit a different field again.
-Player will hit next to the field where the last successful hit was, to try to destroy the ship.
-If he destroys the ship, all nearby fields will be marked as miss.
-If he misses, the field will be marked yellow and it's another player's turn.
-The game continues until one of the players destroys all enemy ships.
+After pressing start button first player chooses a field from the opponent's board to hit.<br />
+If a player hits an opponent's ship, the field changes to red and he can try to hit a different field again.<br />
+Player will hit next to the field where the last successful hit was, to try to destroy the ship.<br />
+If he destroys the ship, all nearby fields will be marked as miss.<br />
+If he misses, the field will be marked yellow and it's another player's turn.<br />
+The game continues until one of the players destroys all enemy ships.<br />
 
 ## Opening the project
 
-Go to appsettings.json in GameAPI project, then fill "user id" and "password" for "DefaultConnection".
-User can run GameAPI from your IDE.
+Go to appsettings.json in GameAPI project, then fill "user id" and "password" for "DefaultConnection".<br />
+User can run GameAPI from your IDE.<br />
 To start react application you need to install node.js, then in terminal/command line search for folder battleship-interface and write "npm start".
 
 ## Gameplay
@@ -47,7 +47,7 @@ User can create here a new game or check the game instructions.
 ![Game instructions](https://user-images.githubusercontent.com/28674766/116146528-e16e8800-a6de-11eb-94b1-8b8fb3cd5055.png)
 
 
-After clicking "Create new game!" button, new modal will apear.
+After clicking "Create new game!" button, new modal will apear.<br />
 User can name his players here.
 
 ![New game modal](https://user-images.githubusercontent.com/28674766/116146547-e59aa580-a6de-11eb-9542-dceb73a94826.png)
@@ -57,7 +57,7 @@ Form validates if user typed new names. He can't proceed without doing this.
 
 ![Validation](https://user-images.githubusercontent.com/28674766/116146453-ce5bb800-a6de-11eb-8d06-04e1f1c1f37d.png)
 
-This is the main gameplay view.
+This is the main gameplay view.<br />
 Just after pressing the "Start game!" button, the whole game will start and players will be trying to destroy opponents ships.
 
 ![Main view](https://user-images.githubusercontent.com/28674766/116146399-c0a63280-a6de-11eb-8681-5cd5dd667ac4.png)
@@ -75,7 +75,7 @@ When user presses "Pause button!", gameplay will stop untill he presses the "Sta
 
 ![Pause game](https://user-images.githubusercontent.com/28674766/116146302-a3716400-a6de-11eb-8925-e3c6d3c5cc42.png)
 
-When one player destroys all enemy ships, the final modal with winner name will appear.
+When one player destroys all enemy ships, the final modal with winner name will appear.<br />
 If a user presses "Close" button, he will be redirected to the home screen, where he will be able to start a new game.
 
 ![Final modal](https://user-images.githubusercontent.com/28674766/116146239-8f2d6700-a6de-11eb-8912-c34f0ec7d581.png)
