@@ -1,5 +1,5 @@
 ## BattleshipGame
-C# | .NET Core | React | Javascript | Entity Framework.<br />
+C# | .NET Core | WebAPI | React | Javascript | Entity Framework.<br />
 This Battleship game is played by artificial intelligence
 
 ## Table of contents
