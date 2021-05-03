@@ -89,4 +89,4 @@ If a user presses "Close" button, he will be redirected to the home screen, wher
 *Entity Framework
 
 ## Status
-Project is almost finished. I plan to add some static files: player photos, ship images and some sound effects.
+Project is finished.
